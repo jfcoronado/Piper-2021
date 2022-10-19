@@ -16,7 +16,7 @@ from config import ecs_test_drive
 
 ### Applicaiton configuration settings ###
 # Set the database target to your local MongoDB instance
-client = MongoClient('127.0.0.1:27017')
+client = MongoClient('mongodb-svc:27017')
 DB_NAME = "mongodb"  # This will be the name of your database
 COL_NAME = "photos"  # This will be the name of your collection
 
@@ -39,8 +39,8 @@ def insert_photo(request):
     comments = request.form['comments']
     filename = secure_filename(request.files['photo'].filename)
     thumbfile = filename.rsplit(".",1)[0] + "-thumb.jpg"
-    photo_url = "http://" + ecs_test_drive['ecs_access_key_id'].split('@')[0] + ".public.ecstestdrive.com/" + ecs_test_drive['ecs_bucket_name'] + "/" + filename
-    thumbnail_url = "http://" + ecs_test_drive['ecs_access_key_id'].split('@')[0] + ".public.ecstestdrive.com/" + ecs_test_drive['ecs_bucket_name'] + "/" + thumbfile
+    photo_url = "http://ns1.ecs1.nolalab.local:9020/" + ecs_test_drive['ecs_bucket_name'] + "/" + filename
+    thumbnail_url = "http://ns1.ecs1.nolalab.local:9020/" + ecs_test_drive['ecs_bucket_name'] + "/" + thumbfile
 
     db_collection.insert_one({'title':title, 'comments':comments, 'photo':photo_url, 'thumb':thumbnail_url})
 
